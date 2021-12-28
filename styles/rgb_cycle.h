@@ -19,9 +19,9 @@ public:
     OverDriveColor ret;
     ret.overdrive = false;
     switch (n_) {
-      case 0: ret.c = Color16(65535, 0, 0); break;
-      case 1: ret.c = Color16(0, 65535, 0); break;
-      case 2: ret.c = Color16(0, 0, 65535); break;
+      case 0: ret.c = Color16(65534, 0, 0); break;
+      case 1: ret.c = Color16(0, 65534, 0); break;
+      case 2: ret.c = Color16(0, 0, 65534); break;
     }
     return ret;
   }

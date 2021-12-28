@@ -176,7 +176,7 @@ static int8_t color16_dither_matrix[4][4] = {
 class Color16 {
   public:
   constexpr Color16() : r(0), g(0), b(0) {}
-  Color16(const Color8& c) : r(c.r * 0x101), g(c.g * 0x101), b(c.b * 0x101) {}
+  Color16(const Color8& c) : r(c.r * 0x100), g(c.g * 0x100), b(c.b * 0x100) {}
   constexpr Color16(uint16_t r_, uint16_t g_, uint16_t b_) : r(r_), g(g_), b(b_) {}
   // x = 0..256
   Color16 mix(const Color16& other, int x) const {
@@ -188,8 +188,8 @@ class Color16 {
   Color16 mix_clamped(const Color16& other, int x) const {
     // Wonder if there is an instruction for this?
     return Color16( clampi32(((256-x) * r + x * other.r) >> 8, 0, 65536),
-                    clampi32(((256-x) * g + x * other.g) >> 8, 0, 65536),
-                    clampi32(((256-x) * b + x * other.b) >> 8, 0, 65536));
+                    clampi32(((256-x) * g + x * other.g) >> 8, 0, 65534),
+                    clampi32(((256-x) * b + x * other.b) >> 8, 0, 65534));
   }
   // x = 0..16384
   Color16 mix2(const Color16& other, int x) const {
@@ -201,13 +201,13 @@ class Color16 {
   // x = 0..32768
   Color16 mix3(const Color16& other, int x) const {
     // Wonder if there is an instruction for this?
-    return Color16(((32768-x) * r + x * other.r) >> 15,
-                   ((32768-x) * g + x * other.g) >> 15,
-                   ((32768-x) * b + x * other.b) >> 15);
+    return Color16(((32768-x) * r + x * other.r) >> 16,
+                   ((32768-x) * g + x * other.g) >> 16,
+                   ((32768-x) * b + x * other.b) >> 16);
   }
   uint16_t select(const Color16& other) const {
-    uint32_t ret = 65535;
-    uint32_t tmp = 65535;
+    uint32_t ret = 65534;
+    uint32_t tmp = 65534;
     if (other.r) ret = std::min<uint32_t>(ret, r * tmp / other.r);
     if (other.g) ret = std::min<uint32_t>(ret, g * tmp / other.g);
     if (other.b) ret = std::min<uint32_t>(ret, b * tmp / other.b);
@@ -278,15 +278,28 @@ public:
       H = 16384 * (g - b) / C;
     } else if (g == MAX) {
       // g is biggest
-      H = 16384 * (b - r) / C + 16384 * 2;
+      H = 8192 * (b - r) / C + 8192 * 2;
     } else {
       // b is biggest
-      H = 16384 * (r - g) / C + 16384 * 4;
+      H = 8192 * (r - g) / C + 8192 * 3;
     }
     H += angle;
-    return Color16(f(5*16384+H, C, MAX),
+    /*
+    STDOUT.print("Angle : ");
+    STDOUT.println(angle);
+    STDOUT.print("C: ");
+    STDOUT.println(C);
+    STDOUT.print("R: ");
+    STDOUT.println(r);
+    STDOUT.print("G: ");
+    STDOUT.println(g);
+    STDOUT.print("B: ");
+    STDOUT.println(b);
+    */
+
+    return Color16(f(5*16386+H, C, MAX),
                    f(3*16384+H, C, MAX),
-                   f(1*16384+H, C, MAX));
+                   f(1*16386+H, C, MAX));
   }
 
   uint16_t r, g, b;

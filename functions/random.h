@@ -8,7 +8,7 @@
 
 class RandomF {
 public:
-  void run(BladeBase* blade) { mix_ = random(32768); }
+  void run(BladeBase* blade) { mix_ = random(15000); }
   int getInteger(int led) { return mix_; }
 private:
   int mix_;

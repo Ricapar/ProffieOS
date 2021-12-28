@@ -1,4 +1,4 @@
-/*
+          /*
  ProffieOS: Control software for lightsabers and other props.
  http://fredrik.hubbe.net/lightsaber/teensy_saber.html
  Copyright (c) 2016-2019 Fredrik Hubinette
@@ -21,22 +21,11 @@
 // You can have multiple configuration files, and specify which one
 // to use here.
 
-#define CONFIG_FILE "config/default_proffieboard_config.h"
-// #define CONFIG_FILE "config/default_v3_config.h"
-// #define CONFIG_FILE "config/crossguard_config.h"
-// #define CONFIG_FILE "config/graflex_v1_config.h"
-// #define CONFIG_FILE "config/prop_shield_fastled_v1_config.h"
-// #define CONFIG_FILE "config/owk_v2_config.h"
-// #define CONFIG_FILE "config/test_bench_config.h"
-// #define CONFIG_FILE "config/toy_saber_config.h"
-// #define CONFIG_FILE "config/proffieboard_v1_test_bench_config.h"
-// #define CONFIG_FILE "config/td_proffieboard_config.h"
-// #define CONFIG_FILE "config/teensy_audio_shield_micom.h"
-// #define CONFIG_FILE "config/proffieboard_v2_ob4.h"
+#define CONFIG_FILE "config/s3config.h"
 
 #ifdef CONFIG_FILE_TEST
 #undef CONFIG_FILE
-#define CONFIG_FILE CONFIG_FILE_TEST
+#define CONFIG_FILE CONFIG_FILE_TESTcolor
 #endif
 
 #define CONFIG_TOP
@@ -189,7 +178,7 @@ SnoozeTouch snooze_touch;
 SnoozeBlock snooze_config(snooze_touch, snooze_digital, snooze_timer);
 #endif
 
-const char version[] = "$Id: ce12a06a1e236b5101ec60c950530a9a4719a74d $";
+const char version[] = "v5.9";
 const char install_time[] = __DATE__ " " __TIME__;
 
 #include "common/state_machine.h"
@@ -443,7 +432,6 @@ struct is_same_type<T, T> { static const bool value = true; };
 #include "transitions/instant.h"
 #include "transitions/delay.h"
 #include "transitions/wipe.h"
-#include "transitions/join.h"
 #include "transitions/boing.h"
 #include "transitions/random.h"
 #include "transitions/colorcycle.h"
